@@ -1,4 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import deadIcon from '../assets/dead.svg'
+import loveIcon from '../assets/love.svg'
+import plusIcon from '../assets/plus.svg'
+import readIcon from '../assets/read.svg'
+import readingIcon from '../assets/reading.svg'
 
 export type Book = {
   id: number
@@ -7,24 +12,27 @@ export type Book = {
   genre: string
   category: string
   cover: string
+  description: string
 }
+
+export type ReadingStatus = 'none' | 'reading' | 'want-to-read' | 'read' | 'dropped'
 
 type BookCardProps = {
   book: Book
+  status: ReadingStatus
+  onStatusChange: (status: ReadingStatus) => void
+  onBookClick?: (book: Book) => void
 }
 
-type ReadingStatus = 'none' | 'reading' | 'want-to-read' | 'read' | 'dropped'
-
 const statuses: Array<{ value: ReadingStatus; label: string; icon: string }> = [
-  { value: 'none', label: 'Без статуса', icon: '/assets/plus.svg' },
-  { value: 'reading', label: 'Читаю', icon: '/assets/reading.svg' },
-  { value: 'want-to-read', label: 'Хочу прочитать', icon: '/assets/love.svg' },
-  { value: 'read', label: 'Прочитано', icon: '/assets/read.svg' },
-  { value: 'dropped', label: 'Брошено', icon: '/assets/dead.svg' },
+  { value: 'none', label: 'Без статуса', icon: plusIcon },
+  { value: 'reading', label: 'Читаю', icon: readingIcon },
+  { value: 'want-to-read', label: 'Хочу прочитать', icon: loveIcon },
+  { value: 'read', label: 'Прочитано', icon: readIcon },
+  { value: 'dropped', label: 'Брошено', icon: deadIcon },
 ]
 
-function BookCard({ book }: BookCardProps) {
-  const [status, setStatus] = useState<ReadingStatus>('none')
+function BookCard({ book, status, onStatusChange, onBookClick }: BookCardProps) {
   const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false)
   const statusMenuRef = useRef<HTMLDivElement>(null)
 
@@ -42,7 +50,19 @@ function BookCard({ book }: BookCardProps) {
   const selectedStatus = statuses.find((item) => item.value === status)
 
   return (
-    <article className="book-card" ref={statusMenuRef}>
+    <article
+      className="book-card"
+      ref={statusMenuRef}
+      role={onBookClick ? 'button' : undefined}
+      tabIndex={onBookClick ? 0 : undefined}
+      onClick={() => onBookClick?.(book)}
+      onKeyDown={(event) => {
+        if (onBookClick && (event.key === 'Enter' || event.key === ' ')) {
+          event.preventDefault()
+          onBookClick(book)
+        }
+      }}
+    >
       <img className="book-cover" src={book.cover} alt={`Обложка: ${book.title}`} />
       <div className="book-details">
         <h2>{book.title}</h2>
@@ -56,13 +76,16 @@ function BookCard({ book }: BookCardProps) {
           title="Изменить статус книги"
           aria-label="Изменить статус книги"
           aria-expanded={isStatusMenuOpen}
-          onClick={() => setIsStatusMenuOpen(!isStatusMenuOpen)}
+          onClick={(event) => {
+            event.stopPropagation()
+            setIsStatusMenuOpen(!isStatusMenuOpen)
+          }}
         >
-          <img key={status} src={selectedStatus?.icon ?? '/assets/plus.svg'} alt="" />
+          <img key={status} src={selectedStatus?.icon ?? plusIcon} alt="" />
         </button>
       </div>
       {isStatusMenuOpen && (
-        <div className="status-menu" role="radiogroup" aria-label="Статус книги">
+        <div className="status-menu" role="radiogroup" aria-label="Статус книги" onClick={(event) => event.stopPropagation()}>
           {statuses.map((item) => (
             <label className="status-option" key={item.value}>
               <span>{item.label}</span>
@@ -72,7 +95,7 @@ function BookCard({ book }: BookCardProps) {
                 value={item.value}
                 checked={status === item.value}
                 onChange={() => {
-                  setStatus(item.value)
+                  onStatusChange(item.value)
                   setIsStatusMenuOpen(false)
                 }}
               />

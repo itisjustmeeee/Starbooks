@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import acceptIcon from '../assets/accept icon.svg'
+import accordionClosedIcon from '../assets/Accordion button_closed.svg'
+import accordionOpenedIcon from '../assets/accrodion button_opened.svg'
 
-export type SortOrder = 'newest' | 'oldest' | 'az' | 'za'
+export type SortOrder = 'newest' | 'oldest' | 'az' | 'za' | 'author-az'
 
 type SortOption = {
   value: SortOrder
@@ -17,17 +20,30 @@ const sortOptions: SortOption[] = [
   { value: 'oldest', label: 'Сначала старое' },
   { value: 'az', label: 'от А до Я' },
   { value: 'za', label: 'от Я до А' },
+  { value: 'author-az', label: 'По фамилии автора' },
 ]
 
 function SortSelect({ value, onChange }: SortSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
   const selectRef = useRef<HTMLDivElement>(null)
   const selectedOption = sortOptions.find((option) => option.value === value) ?? sortOptions[0]
 
   useEffect(() => {
+    if (!isClosing) return
+
+    const timeoutId = window.setTimeout(() => {
+      setIsOpen(false)
+      setIsClosing(false)
+    }, 180)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [isClosing])
+
+  useEffect(() => {
     function closeSelect(event: MouseEvent) {
       if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+        setIsClosing(true)
       }
     }
 
@@ -42,17 +58,24 @@ function SortSelect({ value, onChange }: SortSelectProps) {
         type="button"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (isOpen) {
+            setIsClosing(true)
+          } else {
+            setIsOpen(true)
+            setIsClosing(false)
+          }
+        }}
       >
         <span>{selectedOption.label}</span>
         <img
           className="sort-accordion-icon"
-          src={isOpen ? '/assets/accrodion%20button_opened.svg' : '/assets/Accordion%20button_closed.svg'}
+          src={isOpen ? accordionOpenedIcon : accordionClosedIcon}
           alt=""
         />
       </button>
       {isOpen && (
-        <div className="sort-options" role="listbox" aria-label="Порядок сортировки">
+        <div className={isClosing ? 'sort-options is-closing' : 'sort-options'} role="listbox" aria-label="Порядок сортировки">
           {sortOptions.map((option) => (
             <button
               className={option.value === value ? 'sort-option selected' : 'sort-option'}
@@ -62,11 +85,11 @@ function SortSelect({ value, onChange }: SortSelectProps) {
               aria-selected={option.value === value}
               onClick={() => {
                 onChange(option.value)
-                setIsOpen(false)
+                setIsClosing(true)
               }}
             >
               <span>{option.label}</span>
-              {option.value === value && <img className="sort-check" src="/assets/accept%20icon.svg" alt="" />}
+              {option.value === value && <img className="sort-check" src={acceptIcon} alt="" />}
             </button>
           ))}
         </div>

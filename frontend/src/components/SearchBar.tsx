@@ -1,19 +1,23 @@
-import { useState } from 'react'
+import searchIcon from '../assets/search.svg'
 
-function SearchBar() {
-  const [query, setQuery] = useState('')
+type SearchBarProps = {
+  query: string
+  onQueryChange: (query: string) => void
+}
+
+function SearchBar({ query, onQueryChange }: SearchBarProps) {
 
   return (
     <label className="search-field">
       <span className="sr-only">Поиск книг</span>
       <input
         type="search"
-        placeholder="Search"
+        placeholder="Поиск книг"
         value={query}
-        onChange={(event) => setQuery(event.target.value)}
+        onChange={(event) => onQueryChange(event.target.value)}
       />
       <button type="button" aria-label="Найти" title="Найти">
-        <img src="/assets/search.svg" alt="" />
+        <img src={searchIcon} alt="" />
       </button>
     </label>
   )

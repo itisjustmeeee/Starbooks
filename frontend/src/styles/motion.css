@@ -3,6 +3,11 @@
   to { opacity: 1; transform: translateY(0) scaleY(1); }
 }
 
+@keyframes sortMenuOut {
+  from { opacity: 1; transform: translateY(0) scaleY(1); }
+  to { opacity: 0; transform: translateY(-5px) scaleY(.96); }
+}
+
 @keyframes statusMenuIn {
   from { opacity: 0; transform: translateY(-4px) scale(.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }

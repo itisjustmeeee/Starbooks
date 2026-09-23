@@ -58,7 +58,7 @@ function BookCard({ book }: BookCardProps) {
           aria-expanded={isStatusMenuOpen}
           onClick={() => setIsStatusMenuOpen(!isStatusMenuOpen)}
         >
-          <img src={selectedStatus?.icon ?? '/assets/plus.svg'} alt="" />
+          <img key={status} src={selectedStatus?.icon ?? '/assets/plus.svg'} alt="" />
         </button>
       </div>
       {isStatusMenuOpen && (

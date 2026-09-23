@@ -1,0 +1,13 @@
+@keyframes sortMenuIn {
+  from { opacity: 0; transform: translateY(-5px) scaleY(.96); }
+  to { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+@keyframes statusMenuIn {
+  from { opacity: 0; transform: translateY(-4px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sort-options, .status-menu { animation: none; }
+}

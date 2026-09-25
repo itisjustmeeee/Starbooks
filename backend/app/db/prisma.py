@@ -1,4 +1,4 @@
-from prisma import Prisma
+from backend.app.db.generated import Prisma
 
 prisma = Prisma()
 

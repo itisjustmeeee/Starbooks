@@ -1,0 +1,7 @@
+@import './styles/base.css';
+@import './styles/header.css';
+@import './styles/catalog.css';
+@import './styles/profile.css';
+@import './styles/book-page.css';
+@import './styles/motion.css';
+@import './styles/responsive.css';

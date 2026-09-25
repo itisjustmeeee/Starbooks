@@ -1,0 +1,16 @@
+.site-header { position: relative; height: 76px; padding: 10px 4.2%; display: flex; align-items: center; gap: 42px; background: #336633; color: white; }
+.brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 20px; line-height: 1; min-width: 170px; }
+.brand img { width: 52px; height: 52px; }
+.brand span { display: flex; flex-direction: column; gap: 4px; font-family: 'Roboto Slab', serif; }
+.brand small { font-family: Roboto, Arial, sans-serif; font-size: 9px; letter-spacing: .4px; }
+.search-field { position: absolute; left: 50%; display: flex; width: min(500px, 45vw); max-width: 500px; height: 30px; overflow: hidden; border-radius: 15px; background: #fff; transform: translateX(-50%); }
+.search-field input { min-width: 0; flex: 1; height: 30px; padding: 0 10px; border: 0; outline: 0; color: #5d3d29; font-size: 10px; }
+.search-field button { position: relative; flex: 0 0 60px; width: 60px; height: 30px; overflow: hidden; padding: 0; border-radius: 15px; background: #66cc99; }
+.search-field button img { position: absolute; top: 50%; left: 50%; width: 112px; height: 30px; max-width: none; transform: translate(-50%, -50%); }
+.account-actions { margin-left: auto; display: flex; align-items: center; gap: 13px; }
+.icon-action, .profile-action { display: flex; flex-direction: column; align-items: center; gap: 2px; color: #fff; background: transparent; font-size: 12px; }
+.icon-action img { width: 32px; height: 32px; object-fit: contain; }
+.profile-action img { width: 42px; height: 42px; }
+.profile-action { font-size: 12px; }
+.theme-toggle { display: flex; flex-direction: column; align-items: center; gap: 2px; color: #fff; background: transparent; font-size: 12px; }
+.theme-toggle > span:first-child { display: block; height: 32px; font-size: 28px; line-height: 32px; }

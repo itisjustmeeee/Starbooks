@@ -10,6 +10,38 @@
 - Backend: fastAPI, Python, PrismaORM, Vite
 - Frontend: React, TypeScript
 
+## Запуск backend
+
+- Поднять PostgreSQL: pip install -e . 
+- Заполнить файл .env нужными данными по аналогии с .env.example 
+- Заполнить базу данных начальными данными: prisma generate && prisma db push 
+- Запустить сервер: uvicorn app.main:app --reload 
+- Просмотр документации API: открыть http://localhost:8000/docs
+
+## Запуск в Docker
+
+1. Скопируйте `.env.example` в `.env` и задайте секреты для PostgreSQL и JWT.
+2. Запустите сервисы:
+
+```bash
+docker compose up --build
+```
+
+После запуска:
+
+- frontend: http://localhost:5173
+- backend API: http://localhost:8000
+- Swagger UI: http://localhost:8000/docs
+- healthcheck: http://localhost:8000/health
+
+Остановка контейнеров:
+
+```bash
+docker compose down
+```
+
+Данные PostgreSQL хранятся в Docker volume `starbooks_postgres_data` и сохраняются между перезапусками. Для полной очистки данных используйте `docker compose down -v`.
+
 ## Функциональные требования:
 
 1.	Стабильно осуществлять регистрацию и вход;
